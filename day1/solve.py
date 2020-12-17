@@ -17,6 +17,7 @@ if total_values > 0:
                 sys.stdout.write(".") 
             if all_values[ii] + all_values[ix] == 2020:
                 print(f"\nfound that {all_values[ii]} + {all_values[ix]} = 2020\nTheir product is {all_values[ii] * all_values[ix]}")
+
 else:
     print("\ncould not read values")
 
