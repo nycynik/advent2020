@@ -1,10 +1,11 @@
+# https://dev.to/rpalo/advent-of-code-2020-solution-megathread-day-9-encoding-error-594o
 from collections import deque
 
 
 def get_data():
     data = []
 
-    data_file = open("data.txt")
+    data_file = open("test.txt")
 
     for val in data_file:
         data.append(int(val))

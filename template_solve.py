@@ -8,6 +8,8 @@ def get_data():
         data.append(val)
     data_file.close()
 
+    print(f"read {len(data)} lines\n")
+
     return data
 
 
@@ -33,6 +35,8 @@ def get_data():
     for idx, val in enumerate(data_file):
         data[idx] = val.split()
     data_file.close()
+
+    print(f"read {len(data)} lines\n")
 
     return data
 
