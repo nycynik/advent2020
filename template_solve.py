@@ -5,7 +5,7 @@ def get_data():
     data_file = open("data.txt")
 
     for val in data_file:
-        data.append(val)
+        data.append(val.strip())
     data_file.close()
 
     print(f"read {len(data)} lines\n")

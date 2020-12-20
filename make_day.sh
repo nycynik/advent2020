@@ -3,6 +3,7 @@
 if [ ! -d day$1 ]; then
   mkdir day$1
   cd day$1
+  touch instructions.md
   touch data.txt
   touch test.txt
   # xsel -b > data.txt
