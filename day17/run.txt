@@ -1,0 +1,21 @@
+read 8 lines
+
+
+Cycle: 1
+Active Cube Count: 178
+
+Cycle: 2
+Active Cube Count: 160
+
+Cycle: 3
+Active Cube Count: 1048
+
+Cycle: 4
+Active Cube Count: 404
+
+Cycle: 5
+Active Cube Count: 2644
+
+Cycle: 6
+Active Cube Count: 1728
+1728
