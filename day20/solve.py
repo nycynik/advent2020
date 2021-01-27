@@ -1,4 +1,5 @@
 import numpy as np
+import re
 
 # with hash instead of array
 
@@ -6,7 +7,7 @@ import numpy as np
 def get_data():
     data = {}
 
-    data_file = open("data.txt")
+    data_file = open("test.txt")
 
     state = 0
     piece = {'grid': np.empty((10, 10)), 'sides': [], 'matches': []}
@@ -65,6 +66,67 @@ def find_top_matches(this_key, data, side):
     return matches
 
 
+def trim_piece(piece):
+    np_piece = piece['grid'][1:-1, 1:-1]
+    pattern = "[\' \]\[]"
+
+    block = []
+    for row in np_piece:
+        this_row = re.sub(pattern, "", str(row))
+        block.append(this_row)
+
+    return block
+
+
+def print_puzzle(puzzle):
+    for p in puzzle:
+        print(p)
+
+
+def add_piece_to_puzzle(current_piece, direction, puzzle_picture):
+
+    piece_picture = trim_piece(current_piece)
+    flip = False
+    if direction < 0:
+        flip = True
+
+    for idx, p in enumerate(piece_picture):
+        if flip:
+            puzzle_picture[idx] += "".join(reversed(p))
+        else:
+            puzzle_picture[idx] += p
+
+    return puzzle_picture
+
+
+def build_puzzle(data, start_piece_id):
+
+    current_piece = data[start_piece_id]
+    puzzle_picture = trim_piece(current_piece)
+
+    puzzle = [[start_piece_id]]
+
+    # go left!
+    has_left_piece = True
+    row = 0
+    while (has_left_piece):
+        has_left_piece = False
+        for m in current_piece['matches']:
+            if m[1] == 3 or m[1] == -3:
+                # we have a match left, so lets use it.
+                current_piece_id = m[0]
+                current_piece = data[current_piece_id]
+                puzzle[row].append(current_piece_id)
+                puzzle_picture = add_piece_to_puzzle(
+                    current_piece, m[1], puzzle_picture)
+                has_left_piece = True
+
+    print_puzzle(puzzle_picture)
+    print(puzzle)
+
+
+
+
 def check_data(data):
 
     # find all matching sides
@@ -84,14 +146,15 @@ def check_data(data):
     corner_count = 0
     side_count = 0
     inner_count = 0
-
+    start_piece_id = None
     for k, d in data.items():
+        print(k, d['matches'])
         link_count = len(d['matches'])
         # corners have only 2 matches.
         if link_count == 2:
             corner_count += 1
-            print(k, d)
             quot *= int(k)
+            start_piece_id = k
 
         if link_count == 3:
             side_count += 1
@@ -101,6 +164,10 @@ def check_data(data):
 
     print(f'Corners: {corner_count} sides: {side_count} inside: {inner_count}')
     print(quot)
+
+    print(f'Building...')
+    build_puzzle(data, 1951)
+
     return None
 
 
