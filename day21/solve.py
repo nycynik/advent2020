@@ -2,7 +2,7 @@
 def get_data():
     data = []
 
-    data_file = open("test.txt")
+    data_file = open("data.txt")
 
     for val in data_file:
         ingredients, allergens = val.split("(")
@@ -42,26 +42,29 @@ def check_data(data):
             else:
                 # try to solve.
                 for ingredient in item[0]:
-                    if ingredient in allergiens_xref[allergen]:
+                    if ingredient in allergiens_xref[allergen] and allergen in ingredients_xref[ingredient]:
                         # found match
                         ingredients_xref[ingredient] = [allergen]
-                        # prune it off hte rest.
-                        for i in allergiens_xref[allergen]:
-                            print(i)
-                            if i in ingredients_xref:
-                                print(ingredients_xref[i], "still has",
-                                      i, "removing ", allergen)
-                                ingredients_xref[i].remove(allergen)
-                allergiens_xref[allergen].update(item[0])
+                        print(ingredient, "has alergen ", allergen)
+                        # prune this allergen off the rest.
+                        for ing in allergiens_xref[allergen]:
+                            if ing != ingredient and allergen in ingredients_xref[ing]:
+                                ingredients_xref[ing].remove(allergen)
+                    else:
+                        if ingredient not in ingredients_xref:
+                            ingredients_xref[ingredient] = []
+                # allergiens_xref[allergen].update(item[0])
+
+        # print(ingredients_xref)
 
     final_count = 0
-    for ingredient in ingredient_count:
-        if ingredient not in ingredients_xref:
-            print("ING: ", ingredient)
+    for ingredient in ingredients_xref:
+        if len(ingredients_xref[ingredient]) == 0:
+            print("ING: ", ingredient, " COUNT: ",
+                  ingredient_count[ingredient])
             final_count += ingredient_count[ingredient]
 
     print(final_count)
-    print("alg", allergiens_xref)
 
     return None
 
