@@ -49,7 +49,8 @@ def check_data(data):
                         for i in allergiens_xref[allergen]:
                             print(i)
                             if i in ingredients_xref:
-                                print(i, "still has", ingredients_xref[i])
+                                print(ingredients_xref[i], "still has",
+                                      i, "removing ", allergen)
                                 ingredients_xref[i].remove(allergen)
                 allergiens_xref[allergen].update(item[0])
 
