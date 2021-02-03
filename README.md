@@ -8,7 +8,7 @@ It's a race for me and my friends, so beautiful code is not the requirement :)
 
 Hope you are also doing it!! Coding is fun, and these problems are challanging.
 
-Good Luck!
+Good Luck, and Have Fun!
 
 >                  .                                 .              . 
 >         .                   .              .
