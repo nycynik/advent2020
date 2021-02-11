@@ -17,7 +17,7 @@ def get_data():
         if type == 0:
             # process rules
             rule_data = val.strip().split(': ')
-            rules[rule_data[0]] = rule_data[1]
+            rules[int(rule_data[0])] = rule_data[1]
         else:
             messages.append(val.strip())
 
@@ -76,9 +76,66 @@ def check_message_for_rule(m, moffset, rule_id, rules):
     return is_valid, moffset
 
 
+def make_rule(rules):
+    rle = '^'
+
+    # first find our a's and b's
+    a_rule = None
+    b_rule = None
+    for k in rules.keys():
+        if (rules[k][1] == 'a'):
+            a_rule = k
+        if (rules[k][1] == 'b'):
+            b_rule = k
+    del rules[a_rule]
+    del rules[b_rule]
+    print(f"found a at {a_rule} and b at {b_rule}")
+    
+    # replace the as and b's
+    for r in rules.keys():
+        print(rules[r])
+        rules[r] = rules[r].replace(str(a_rule), "a").replace(str(b_rule), "b")
+
+    print (rules)
+    # for r in rules[0]:
+    #     if r != ' ':
+    #         rule = rules[int(r)]
+    #         if (rule[0] == '"'):
+    #             # simple rule.
+    #             rle.append(rule[1])
+    #         else:
+    #             done = False
+    #             rle.append(rules[int(r)])
+
+    done = False
+
+    checker = re.compile('[ab |]+')
+    while not done:
+         done = True
+
+         # for each rule, check if it contains only letters and |. If not, 
+         # try to replace it, but only if the rule it links is already converted to
+         # only letters.
+         for r in rules.keys():
+            
+            c = checker.match(rules[r])
+            if c is None:
+                # done = False
+                print('found', rules[r])
+                for item in rules[r].split(' '):
+                    if item != 'a' and item != 'b':
+                        lookup = rules[int(item)]
+                        if checker.match(lookup) != None:
+                            print(lookup)
+
+
+    print(rle)
+    return rle
+
 def check_message(m, rules):
 
     # alwasy check vs rule 0
+
     # checker = re.compile('^a[[aa|bb]?[ab|ba]?|[ab|ba]?[aa|bb]?]b')
     checker = re.compile('^a((aaab|aaba|bbab|bbba)|(abaa|abbb|baaa|babb))b')
     print(m, checker.match(m))
@@ -90,7 +147,9 @@ def check_data(data):
     rules, messages = data
 
     print(rules)
-    print("")
+    regex_string = make_rule(rules)
+    print("matcher", regex_string)
+    
     valid_count = 0
     for m in messages:
         print("message", m)
