@@ -1,3 +1,4 @@
+import re
 
 def get_data():
     data = []
@@ -78,7 +79,11 @@ def check_message_for_rule(m, moffset, rule_id, rules):
 def check_message(m, rules):
 
     # alwasy check vs rule 0
-    return check_message_for_rule(m, 0, '0', rules)
+    # checker = re.compile('^a[[aa|bb]?[ab|ba]?|[ab|ba]?[aa|bb]?]b')
+    checker = re.compile('^a((aaab|aaba|bbab|bbba)|(abaa|abbb|baaa|babb))b')
+    print(m, checker.match(m))
+
+    # return check_message_for_rule(m, 0, '0', rules)
 
 
 def check_data(data):
